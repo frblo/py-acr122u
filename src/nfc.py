@@ -17,8 +17,16 @@ class Reader:
 
         if len(readers) == 0:
             raise error.NoReader("No readers available")
+        
+        # Filter for objects where "Interface" appears in the string representation
+        # to get the actual ACR122U reader interface
+        interface_readers = [rr for rr in readers if "Interface" in str(rr)]
 
-        reader = readers[0]
+        if len(interface_readers) == 0:
+            raise error.NoReader("No readers available")
+        else:
+            reader = interface_readers[0]
+
         c = reader.createConnection()
 
         try:
